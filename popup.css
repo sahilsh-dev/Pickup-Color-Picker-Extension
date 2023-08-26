@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+.copied-msg {
+    color: blueviolet;
+}
