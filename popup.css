@@ -9,3 +9,8 @@
 .copied-msg {
     color: blueviolet;
 }
+
+#options {
+    display: flex;
+    justify-content: space-between;
+}

@@ -2,7 +2,7 @@ const pickedColor = document.querySelector("#picked-color");
 const unsupportedMsg = document.querySelector(".unsupported-msg");
 const coppiedMsg = document.querySelector(".copied-msg");
 
-document.querySelector("#colorpicker-start").addEventListener("click", () => {
+document.querySelector("#colorpicker").addEventListener("click", () => {
     if (!window.EyeDropper) {
         unsupportedMsg.classList.remove("hidden");
         return;
@@ -22,3 +22,17 @@ document.querySelector("#colorpicker-start").addEventListener("click", () => {
             coppiedMsg.classList.add("hidden");
         })
 })
+
+async function getCurrentTab() {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+}
+
+document.querySelector("#fontpicker").addEventListener("click", async () => {
+    const tab = await getCurrentTab();    
+    chrome.scripting.executeScript({
+        target: {tabId: tab.id},
+        files: ["fontpicker.js"]
+    });
+});
