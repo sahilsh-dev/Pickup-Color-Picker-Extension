@@ -1,15 +1,15 @@
 const pickedColor = document.querySelector("#picked-color");
 const unsupportedMsg = document.querySelector(".unsupported-msg");
 const coppiedMsg = document.querySelector(".copied-msg");
+const fontFamily = document.querySelector(".font-family");
 
 document.querySelector("#colorpicker").addEventListener("click", () => {
     if (!window.EyeDropper) {
         unsupportedMsg.classList.remove("hidden");
         return;
-    } 
-    
-    const eyeDropper = new EyeDropper();
+    }
 
+    const eyeDropper = new EyeDropper();
     eyeDropper.open()
         .then((result) => {
             pickedColor.textContent = result.sRGBHex;
@@ -30,9 +30,9 @@ async function getCurrentTab() {
 }
 
 document.querySelector("#fontpicker").addEventListener("click", async () => {
-    const tab = await getCurrentTab();    
+    const tab = await getCurrentTab();
     chrome.scripting.executeScript({
-        target: {tabId: tab.id},
+        target: { tabId: tab.id },
         files: ["fontpicker.js"]
-    });
+    })
 });
