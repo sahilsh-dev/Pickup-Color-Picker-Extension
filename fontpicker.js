@@ -1,5 +1,5 @@
 document.body.style.cursor = "pointer";
-
+console.log("Started fontpicker.js");
 const textBlock = document.createElement("p");
 document.body.appendChild(textBlock);
 textBlock.style.cssText = `
@@ -10,6 +10,7 @@ textBlock.style.cssText = `
     width: 140px;
     height: 80px;
     background-color: grey;
+    line-height: 1.3;
 `;
 
 const handleMouseMove = (event) => {
@@ -28,7 +29,17 @@ const handleMouseMove = (event) => {
 document.addEventListener("mousemove", handleMouseMove);
 
 document.addEventListener("click", () => {
+    console.warn("------------CLOSED--------");
     document.removeEventListener("mousemove", handleMouseMove);
     textBlock.style.display = "none";
     document.body.style.cursor = "auto";
+})
+
+chrome.runtime.onMessage.addListener((message) => {
+    console.warn("Inside Message", message.message);
+    if (message.message == "start") {
+        document.addEventListener("mousemove", handleMouseMove);
+        textBlock.style.display = "block";
+        document.body.style.cursor = "pointer";
+    }
 })

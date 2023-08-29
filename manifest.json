@@ -2,13 +2,15 @@
     "manifest_version": 3,
     "name": "Pickup",
     "description": "Pick those colorsss!!",
-    "version": "0.3",
+    "version": "0.4",
     "action": {
         "default_popup": "popup.html"
     },
     "permissions": [
         "clipboardWrite", 
         "scripting",
-        "activeTab"
+        "activeTab",
+        "runtime",
+        "storage"
     ]
 }
