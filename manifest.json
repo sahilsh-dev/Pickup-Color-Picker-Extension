@@ -9,7 +9,6 @@
     "permissions": [
         "clipboardWrite", 
         "scripting",
-        "activeTab",
-        "storage"
+        "activeTab"
     ]
 }

@@ -43,10 +43,7 @@ document.querySelector("#fontpicker").addEventListener("click", async () => {
             if (response && response.message === "present") {
                 chrome.tabs.sendMessage(tab.id, { message: "restart" });
             } else {
-                chrome.scripting.executeScript({
-                    target: { tabId: tab.id },
-                    files: ["fontpicker.js"]
-                });
+                console.log("ERROR! No response returned by message");
             }
         }
     });     

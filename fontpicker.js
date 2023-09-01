@@ -16,7 +16,6 @@ textBlock.style.cssText = `
 const handleMouseMove = (event) => {
     const mouseX = event.clientX + 10;
     const mouseY = event.clientY + 10;
-    console.log(mouseX, mouseY)
     textBlock.style.left = `${mouseX}px`;
     textBlock.style.top = `${mouseY}px`;
 
