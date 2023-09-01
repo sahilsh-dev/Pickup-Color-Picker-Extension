@@ -35,11 +35,13 @@ document.addEventListener("click", () => {
     document.body.style.cursor = "auto";
 })
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.warn("Inside Message", message.message);
-    if (message.message == "start") {
+    if (message.message === "restart") {
         document.addEventListener("mousemove", handleMouseMove);
         textBlock.style.display = "block";
         document.body.style.cursor = "pointer";
-    }
+    } else if (message.message === "check") {
+        sendResponse({message: "present"});
+    } 
 })

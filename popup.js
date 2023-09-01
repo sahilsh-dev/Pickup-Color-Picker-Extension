@@ -2,14 +2,6 @@ const pickedColor = document.querySelector("#picked-color");
 const unsupportedMsg = document.querySelector(".unsupported-msg");
 const coppiedMsg = document.querySelector(".copied-msg");
 const fontFamily = document.querySelector(".font-family");
-let fontPickerActive = false;
-
-chrome.storage.local.get(["fontPickerState"], (result) => {
-    // Check if the "fontPickerState" key exists in the result
-    if ("fontPickerState" in result) {
-        fontPickerActive = result.fontPickerState;
-    }
-});
 
 document.querySelector("#colorpicker").addEventListener("click", () => {
     if (!window.EyeDropper) {
@@ -31,7 +23,7 @@ document.querySelector("#colorpicker").addEventListener("click", () => {
         })
 })
 
-async function getCurrentTab() {
+const getCurrentTab = async () => {
     let queryOptions = { active: true, lastFocusedWindow: true };
     let [tab] = await chrome.tabs.query(queryOptions);
     return tab;
@@ -39,17 +31,23 @@ async function getCurrentTab() {
 
 document.querySelector("#fontpicker").addEventListener("click", async () => {
     const tab = await getCurrentTab();
-    // Check if the fontpicker script is already present
-    if (fontPickerActive) {
-        chrome.tabs.sendMessage(tab.id, { message: "start" });
-    } else {
-        fontPickerActive = true;
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            files: ["fontpicker.js"]
-        });
-    }
-    chrome.storage.local.set({ fontPickerState: fontPickerActive });
+    chrome.tabs.sendMessage(tab.id, { message: "check" }, (response) => {
+        if (chrome.runtime.lastError) {
+            // An error occurred, which means the message was not sent
+            chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ["fontpicker.js"]
+            });
+        } else {
+            // Message was sent successfully
+            if (response && response.message === "present") {
+                chrome.tabs.sendMessage(tab.id, { message: "restart" });
+            } else {
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ["fontpicker.js"]
+                });
+            }
+        }
+    });     
 });
-
-
